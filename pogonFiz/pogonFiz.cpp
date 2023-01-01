@@ -1,11 +1,9 @@
 #include <iostream>
-#include "include/header/svet.h";
+#include "include/header/svet.h"
 
-int main() {
-
-	//pfiz::Svet svet;
-	
-	std::cout << "Preverjanje izpisa..." << std::endl;
+int main() {	
+	std::cout << "Inicializacija pogona..." << std::endl;
+	pfiz::Svet svet;
 
 	return 0;
 }                                                                                                                                                                                         

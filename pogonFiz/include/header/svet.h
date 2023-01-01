@@ -1,5 +1,5 @@
-#include "inc.h";
-#include "pogon.h";
+#include "inc.h"
+#include "pogon.h"
 
 namespace pfiz {
 	

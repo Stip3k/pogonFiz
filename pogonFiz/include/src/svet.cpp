@@ -1,21 +1,24 @@
-#include "svet.h"
-#include "svet.h"
+#include "../header/svet.h"
 
 pfiz::Svet::Svet()
 {
 	nastaviOkno();
+	this->pogon.glavnaZanka(this->okno, stevnik);
+}
+
+pfiz::Svet::~Svet()
+{
 }
 
 void pfiz::Svet::nastaviOkno()
 {
 	okno.setFramerateLimit(60);
-	window_style = sf::Style::Default;
 	nastavitve.antialiasingLevel = 4;
 
 	this->okno.create(
 		sf::VideoMode(1920, 1080),
 		"pogonFiz",
-		window_style,
+		sf::Style::Default,
 		nastavitve
 	);
 }

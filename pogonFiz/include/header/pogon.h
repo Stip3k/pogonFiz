@@ -6,6 +6,10 @@ namespace pfiz {
 
 	private:
 		sf::Time dCas;
+		sf::Event dogodek;
+		sf::RenderWindow* kOkno;
+
+		//Objekt za upravljanje z entitetami
 
 	public:
 		Pogon();
@@ -13,7 +17,10 @@ namespace pfiz {
 
 		void glavnaZanka(sf::RenderWindow& okno, sf::Clock stevnik);
 		void posodobi();
-		void preveriDogodke();
+		void zakljuciPogon();
 
+		//Funkcije za preverjanje dogodkov:
+		void preveriDogodke();
+		void pritisMiska();
 	};
 }

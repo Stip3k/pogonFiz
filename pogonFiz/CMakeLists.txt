@@ -11,6 +11,6 @@ message("Trenutna pot do projekta: ${CMAKE_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML
 find_package(SFML 2.5 COMPONENTS graphics window REQUIRED)
 
 # Add source to this project's executable.
-add_executable (pogonFiz "pogonFiz.cpp" "pogonFiz.h" "include/src/svet.cpp" "include/header/svet.h" "include/src/pogon.cpp" "include/header/pogon.h" "include/header/oblika.h" "include/src/oblika.cpp" "include/header/telo.h" "include/src/telo.cpp")
+add_executable (pogonFiz "pogonFiz.cpp" "pogonFiz.h" "include/src/svet.cpp" "include/header/svet.h" "include/src/pogon.cpp" "include/header/pogon.h"   "include/header/telo.h" "include/src/telo.cpp" "include/header/krog.h" "include/src/krog.cpp" "include/header/telesaList.h")
 
 target_link_libraries(pogonFiz sfml-graphics)

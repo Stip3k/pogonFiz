@@ -1,4 +1,6 @@
 #include "inc.h";
+#include "../header/telesaList.h"
+#include "../header/krog.h"
 
 namespace pfiz {
 	
@@ -8,6 +10,7 @@ namespace pfiz {
 		sf::Time dCas;
 		sf::Event dogodek;
 		sf::RenderWindow* kOkno;
+		povezanSeznamTeles<Krog> krogi;
 
 		//Objekt za upravljanje z entitetami
 

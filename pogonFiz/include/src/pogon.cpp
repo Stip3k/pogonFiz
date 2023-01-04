@@ -39,9 +39,17 @@ void pfiz::Pogon::preveriDogodke()
 
 void pfiz::Pogon::pritisMiska()
 {
-	switch (this->dogodek.type) {
-		case sf::Mouse::Left: /*Stvari entiteto*/; break;
-		case sf::Mouse::Right: /*Brisi entiteto*/; break;
+	std::cout << "pritisk miske" << this->dogodek.type << std::endl;
+	switch (this->dogodek.mouseButton.button) {
+	case sf::Mouse::Left:
+		krogi.dodajTelo(
+			dogodek.mouseButton.x,
+			dogodek.mouseButton.y,
+			30
+		);
+		break;
+	case sf::Mouse::Right: /*Brisi telo*/;
+		break;
 	}
 }
 

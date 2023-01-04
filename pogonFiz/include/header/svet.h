@@ -4,7 +4,7 @@
 namespace pfiz {
 	
 	class Svet {
-	private:
+	protected:
 		sf::RenderWindow okno;
 		sf::ContextSettings nastavitve;
 		int32_t oknoStil;

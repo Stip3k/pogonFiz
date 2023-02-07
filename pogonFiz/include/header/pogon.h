@@ -1,7 +1,7 @@
-#include "inc.h";
-#include "../header/telesaList.h"
-#include "../header/krog.h"
+#include "inc.h"
+#include "upraviteljTeles.h"
 
+//Moram odstraniti ta namespace za pogon, ker ni del njega
 namespace pfiz {
 	
 	class Pogon {
@@ -10,7 +10,7 @@ namespace pfiz {
 		sf::Time dCas;
 		sf::Event dogodek;
 		sf::RenderWindow* kOkno;
-		povezanSeznamTeles<Krog> krogi;
+		UpraviteljTeles upravTel;
 
 		//Objekt za upravljanje z entitetami
 

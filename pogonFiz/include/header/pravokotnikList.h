@@ -1,28 +1,28 @@
 #include "../header/inc.h"
-#include "krog.h"
+#include "./pravokotnik.h"
 
 namespace pfiz {
-	class krogList {
+	class pravokotnikList {
 	protected:
-		std::list<Krog*> seznam, seznamBrisi;
+		std::list<Pravokotnik*> seznam, seznamBrisi;
 
 
 	public:
-		krogList() {};
-		~krogList() {};
+		pravokotnikList() {};
+		~pravokotnikList() {};
 
 		//Ce bom dodal vec moznih oblik moram spremeniti parametre
-		void dodajTelo(Krog* el) {
+		void dodajTelo(Pravokotnik* el) {
 			seznam.push_back(el);
 		}
 
-		void dodajBrisiTabeli(Krog* el) {
+		void dodajBrisiTabeli(Pravokotnik* el) {
 			seznamBrisi.push_back(el);
 		}
 
 		void brisi() {
-			std::list<Krog*>::iterator it;
-			for (Krog* i : seznamBrisi) {
+			std::list<Pravokotnik*>::iterator it;
+			for (Pravokotnik* i : seznamBrisi) {
 				if (!seznam.empty()) {
 					if (seznam.begin() != seznam.end()) {
 						it = std::find(seznam.begin(), seznam.end(), i);
@@ -37,15 +37,15 @@ namespace pfiz {
 		}
 
 		void posodobiOblike(sf::RenderWindow* kOkno, sf::Time dCas) {
-			std::list<Krog*>::iterator it;
+			std::list<Pravokotnik*>::iterator it;
 			for (it = this->seznam.begin(); it != this->seznam.end(); ++it) {
 				/*Najprej preveri ali je
 				 *oblika v zraku, ce je
 				 *potem gravitacija vpliva
 				 */
-				Krog* i = *it;
+				Pravokotnik* i = *it;
 
-				this->preveriStike(kOkno, i);
+				//this->preveriStike(kOkno, i);
 				i->premikOblike();
 
 				/*
@@ -53,45 +53,46 @@ namespace pfiz {
 				std::cout << poz.x << " " << poz.y << std::endl;
 				*/
 
-				//std::cout << (float)dCas.asSeconds() << std::endl;
+				std::cout << (float)dCas.asSeconds() << std::endl;
 
 				i->vrniObliko()->move(i->vrniVel().x * (float)dCas.asSeconds(),
-									  i->vrniVel().y * (float)dCas.asSeconds());
+				i->vrniVel().y * (float)dCas.asSeconds());
 				kOkno->draw(*(i->vrniObliko()));
 
 				//Posodobi vrednosti kraja oblike v razredu oblike pogona
 				i->nastaviPoz(i->vrniObliko()->getPosition());
 			}
 		}
-
-		void preveriStike(sf::RenderWindow* kOkno, Krog* k) {
+		/*
+		void preveriStike(sf::RenderWindow* kOkno, Pravokotnik* k) {
 			sf::Vector2u vel = kOkno->getSize();
 			sf::Vector2f poz = k->vrniPoz();
-			float r = k->vrniObliko()->getRadius()*2;
+			float r = k->vrniObliko()->getRadius() * 2;
 			//Preveri ali oblika pada
-			if ( ((poz.y + r) < vel.y) && 
-				 ((poz.x + r) < vel.x) &&
-				 (poz.y > 0) && 
-				 (poz.x > 0)) {
+			if (((poz.y + r) < vel.y) &&
+				((poz.x + r) < vel.x) &&
+				(poz.y > 0) &&
+				(poz.x > 0)) {
 				k->nastaviPadec(1);
-			} else {
+			}
+			else {
 				k->nastaviPadec(0);
 				if ((poz.y + r) > vel.y) { k->vrniObliko()->setPosition(poz.x, vel.y - r); }
 			}
 		}
-
+		*/
 		std::size_t vrniVel() {
 			return seznam.size();
 		}
-		
+
 		void izprazniSeznam() {
-			for (Krog* i : seznam) {
+			for (Pravokotnik* i : seznam) {
 				delete i;
 			}
 		}
 
-		std::list<Krog*>* vrniSeznam() {
-			std::list<Krog*>* kSeznam = &this->seznam;
+		std::list<Pravokotnik*>* vrniSeznam() {
+			std::list<Pravokotnik*>* kSeznam = &this->seznam;
 			return kSeznam;
 		}
 

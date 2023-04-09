@@ -3,7 +3,7 @@
 
 namespace pfiz {
 
-	class Krog: public Telo{
+	class Krog: public Telo {
 	protected:
 		sf::CircleShape* krog;
 		float radij;

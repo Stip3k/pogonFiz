@@ -59,13 +59,20 @@ void pfiz::Pogon::pritisMiska()
 		//Preveri ali je kliknil na ze obstojeco obliko,
 		//ce je potem ne ustvari nove.
 		this->upravTel.dodajKrog(
-			(float)dogodek.mouseButton.x - 30.0,
-			(float)dogodek.mouseButton.y - 30.0,
+			(double)dogodek.mouseButton.x - 30.0,
+			(double)dogodek.mouseButton.y - 30.0,
 			30.0
 		);
 	}
 		break;
-	case sf::Mouse::Right: /*Brisi telo*/;
+	case sf::Mouse::Right: {
+		this->upravTel.dodajStirikotnik(
+			(double)dogodek.mouseButton.x - 30.0,
+			(double)dogodek.mouseButton.y - 30.0,
+			300.0,
+			150.0
+		);
+	}
 		break;
 	}
 }

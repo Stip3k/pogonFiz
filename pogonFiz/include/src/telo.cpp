@@ -1,32 +1,34 @@
 #include "../header/telo.h"
 
 pfiz::Telo::Telo(float x, float y) :
-	masa(0),
+	masa((rand() % 5 + 1)*10),
 	g(0.f),
-	staticno(0),
+	povrnitev(1 / ((rand() % 10 + 1))),
+	staticno(1),
 	premik(0),
 	padec(0),
 	poz(x,y),
 	grav(0.f, 0.f),
 	vel(0.f, 0.f)
-	//velTmp(5.f, 5.f)
 {}
 
 pfiz::Telo::~Telo() {
 }
 
 void pfiz::Telo::premikOblike() {
-	if (this->padec) {
-		if (this->grav.y < 5.f) {
-			this->grav.y += 0.01;
+	if (this->staticno) {
+		if (this->padec) {
+			if (this->grav.y < 5.f) {
+				this->grav.y += (1 / this->masa) * 1.0;
+			}
+			this->vel += this->grav;
+			this->g += this->grav.y;
 		}
-		this->vel += this->grav;
-		this->g += this->grav.y;
-	} else {
-		std::cout << "velja" << std::endl;
-		this->vel.y -= this->g;
-		this->grav.y = 0.0;
-		this->g = 0.0;
+		else {
+			this->vel.y -= this->g;
+			this->grav.y = 0.0;
+			this->g = 0.0;
+		}
 	}
 }
 
@@ -56,6 +58,10 @@ void pfiz::Telo::nastaviVel(float x, float y) {
 	this->vel.x = x;
 	this->vel.y = y;
 }
+void pfiz::Telo::nastaviVel(sf::Vector2f v) {
+	this->vel.x = v.x;
+	this->vel.y = v.y;
+}
 sf::Vector2f pfiz::Telo::vrniVel() {
 	return this->vel;
 }
@@ -77,4 +83,12 @@ void pfiz::Telo::nastaviPoz(sf::Vector2f v) {
 }
 sf::Vector2f pfiz::Telo::vrniPoz() {
 	return this->poz;
+}
+
+float pfiz::Telo::vrniPov() {
+	return this->povrnitev;
+}
+
+void pfiz::Telo::nastaviPov(float pov) {
+	this->povrnitev = pov;
 }

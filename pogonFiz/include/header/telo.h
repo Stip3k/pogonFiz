@@ -1,10 +1,12 @@
+#pragma once
+
 #include "inc.h"
 
 namespace pfiz {
 	
 	class Telo {
 	protected:
-		float masa, g;
+		float masa, g, povrnitev;//Povrnitev se uporablja za odboj pri trkih
 		bool staticno, premik, padec;
 		sf::Vector2f poz, grav, vel, velTmp;
 
@@ -26,6 +28,7 @@ namespace pfiz {
 		bool vrniPremik();
 
 		void nastaviVel(float x, float y);
+		void nastaviVel(sf::Vector2f v);
 		sf::Vector2f vrniVel();
 
 		void nastaviPadec(bool padec);
@@ -34,5 +37,8 @@ namespace pfiz {
 		void nastaviPoz(sf::Vector2f v);
 		void nastaviPoz(float x, float y);
 		sf::Vector2f vrniPoz();
+
+		float vrniPov();
+		void nastaviPov(float pov);
 	};
 }

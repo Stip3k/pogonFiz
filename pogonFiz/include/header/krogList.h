@@ -72,7 +72,7 @@ namespace pfiz {
 			if ( ((poz.y + r) < vel.y) && 
 				 ((poz.x + r) < vel.x) &&
 				 (poz.y > 0) && 
-				 (poz.x > 0)) {
+				 (poz.x > 0) && k->vrniTrk()) {
 				k->nastaviPadec(1);
 			} else {
 				k->nastaviPadec(0);

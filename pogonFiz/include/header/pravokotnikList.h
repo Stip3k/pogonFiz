@@ -53,7 +53,7 @@ namespace pfiz {
 				std::cout << poz.x << " " << poz.y << std::endl;
 				*/
 
-				std::cout << (float)dCas.asSeconds() << std::endl;
+				//std::cout << (float)dCas.asSeconds() << std::endl;
 
 				i->vrniObliko()->move(i->vrniVel().x * (float)dCas.asSeconds(),
 				i->vrniVel().y * (float)dCas.asSeconds());

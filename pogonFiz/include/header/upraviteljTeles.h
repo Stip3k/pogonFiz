@@ -12,7 +12,6 @@ namespace pfiz {
 		void opraviTrk(Krog* k, Pravokotnik* k2);
 		sf::Vector2f normalaTrka(sf::Vector2f p, sf::Vector2f d);
 		float skalarniProd(sf::Vector2f rv, sf::Vector2f normala);
-		float clamp(float value, float low, float high);
 	public:
 		UpraviteljTeles();
 		~UpraviteljTeles();

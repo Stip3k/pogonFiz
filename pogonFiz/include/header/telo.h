@@ -7,7 +7,7 @@ namespace pfiz {
 	class Telo {
 	protected:
 		float masa, g, povrnitev;//Povrnitev se uporablja za odboj pri trkih
-		bool staticno, premik, padec;
+		bool staticno, padec, trk;
 		sf::Vector2f poz, grav, vel, velTmp;
 
 	public:
@@ -16,6 +16,7 @@ namespace pfiz {
 
 		void premikOblike();
 		void trkRegresija();//Samo dekl. nisem se nic def.
+		void spremnGrav(float g);
 
 		//Vmensiki spremenljivk:
 		void nastaviMaso(float masa);
@@ -23,9 +24,6 @@ namespace pfiz {
 
 		void nastaviStaticno(bool staticno);
 		bool vrniStaticno();
-
-		void nastaviPremik(bool premik);             
-		bool vrniPremik();
 
 		void nastaviVel(float x, float y);
 		void nastaviVel(sf::Vector2f v);
@@ -40,5 +38,11 @@ namespace pfiz {
 
 		float vrniPov();
 		void nastaviPov(float pov);
+
+		float vrniGrav();
+		void nastaviGrav(float pov);
+
+		void nastaviTrk(bool trk);
+		bool vrniTrk();
 	};
 }

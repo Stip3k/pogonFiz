@@ -1,4 +1,4 @@
-#include "../header/upraviteljTeles.h"
+﻿#include "../header/upraviteljTeles.h"
 
 pfiz::UpraviteljTeles::UpraviteljTeles() {
 	srand(time(NULL));
@@ -50,15 +50,6 @@ void pfiz::UpraviteljTeles::stikOblik() {
 				
 				Krog* k2 = *(it2);
 				
-				/*//Manj ucinkovito in natancno
-					if (k != k2) {
-						if (k->vrniObliko()->getGlobalBounds().intersects(
-							k2->vrniObliko()->getGlobalBounds())) {
-							this->opraviTrk(k, k2);
-						}
-					}
-				*/
-				
 				if (k != k2) {
 					sf::Vector2f krog = k->vrniPoz();
 					sf::Vector2f krog2 = k2->vrniPoz();
@@ -77,11 +68,44 @@ void pfiz::UpraviteljTeles::stikOblik() {
 
 				Pravokotnik* p2 = *(it3);
 
-				//if (k->vrniObliko()->getGlobalBounds().intersects(
-					//p2->vrniObliko()->getGlobalBounds())) {
-					this->opraviTrk(k, p2);
-				//}
-		
+				sf::Vector2f closest;
+				sf::Vector2f v2 = p2->vrniObliko()->getSize();
+
+				sf::Vector2f poz;
+				float radijKroga = k->vrniObliko()->getRadius();
+				poz = k->vrniObliko()->getPosition();
+				poz.x += radijKroga; poz.y += radijKroga;
+
+
+				sf::Vector2f pozP;
+				pozP = p2->vrniObliko()->getPosition();
+
+				if ((((poz.x >= pozP.x) && (poz.x <= (pozP.x + v2.x))) &&
+					((poz.y >= pozP.y) && (poz.y <= (pozP.y + v2.y))))) {
+					k->nastaviTrk(0);
+
+					closest.x = poz.x;
+					closest.y = poz.y;
+
+					//closest, pozp
+					double xDal = closest.x - pozP.x;
+					double yDal = closest.y - pozP.y;
+					float radijPravo = std::sqrt(std::pow(2, xDal) + std::pow(2, yDal));
+
+					double dx = pozP.x - poz.x;
+					double dy = pozP.y - poz.y;
+					float d = std::sqrt(dx * dx + dy * dy);
+
+					if (d < (radijKroga + radijPravo)) {
+						std::cout << "Orpavi trk---------------------" << std::endl;
+						std::cout << closest.x << " --- " << closest.y << std::endl;
+						this->opraviTrk(k, p2);
+						k->nastaviVel(k->vrniVel().x, k->vrniVel().y-k->vrniGrav());
+					}
+				}
+				else {
+					k->nastaviTrk(1);
+				}
 			}
 		}
 	}
@@ -96,54 +120,39 @@ void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Krog* k2) {
 	sf::Vector2f normala = this->normalaTrka(k->vrniPoz(), k2->vrniPoz());
 	float velNormale = this->skalarniProd(rv, normala);
 
-	if (velNormale > 0) return; //Telesa se en priblizujeta
+	if (velNormale > 0) return; //Telesa se ne priblizujeta
 
 	float povrnitevTelesa = std::min(k->vrniPov(), k2->vrniPov());
 	float impSkalar = -(1 + povrnitevTelesa) * velNormale;//Sila skozi cas trka
 	sf::Vector2f impulz = impSkalar * normala;
 
+	std::cout << "----------------------------------------------------------------" << std::endl;
+	std::cout << "Normala trka, x: " << normala.x << " in y: " << normala.y << std::endl;
+	std::cout << "Vrednost impSkalar: " << impSkalar << std::endl;
+	std::cout << "Vrednost impulza odboja: x= " << impulz.x << " y= " << impulz.y << std::endl;
 
 	k->nastaviVel(kVel + (1/k->vrniMaso()*impulz));
 	k2->nastaviVel(k2Vel - (1 / k2->vrniMaso() * impulz));
 }
 
+//Preverjanje trkov med krogi in pravokotniki
 void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Pravokotnik* k2) {
 	sf::Vector2f kVel = k->vrniVel();
 	sf::Vector2f k2Vel = k2->vrniVel();
 
 	sf::Vector2f rv = kVel - k2Vel;
+	
+	sf::Vector2f normala = this->normalaTrka(k->vrniPoz(), k2->vrniPoz());
+	float velNormale = this->skalarniProd(rv, normala);
 
-	sf::Vector2f closest;
-	sf::Vector2f v2 = k2->vrniObliko()->getSize();
-
-	sf::Vector2f poz;
-	poz = k->vrniObliko()->getPosition();
-
-	closest.x = clamp(poz.x, k2->vrniPoz().x - v2.x, k2->vrniPoz().x + v2.x );
-	closest.y = clamp(poz.y, k2->vrniPoz().y - v2.y, k2->vrniPoz().y + v2.y );
-
-	//std::cout << poz.x << " poz " << poz.y << std::endl;
-	//std::cout << poz.x << " je med " << k2->vrniPoz().x - v2.x << " - " << k2->vrniPoz().x + v2.x << std::endl;
-	//std::cout << closest.x << " closest " << closest.y << std::endl;
-
-	// Check if the closest point is inside the circle
-	sf::Vector2f dist = closest - k->vrniPoz();
-
-
-	if (std::sqrt(dist.x * dist.x + dist.y * dist.y) > k->vrniObliko()->getRadius()) {
+	if (velNormale > 0) {
 		return;
 	}
 
-	sf::Vector2f normala = dist / std::sqrt(dist.x * dist.x + dist.y * dist.y);
-	float velNormale = this->skalarniProd(rv, normala);
-
-	if (velNormale > 0) { return; }
-
-	float povrnitevTelesa = std::min(k->vrniPov(), k2->vrniPov());
-	float impSkalar = -(1 + povrnitevTelesa) *velNormale; // Sila skozi cas trka
+	float povrnitevTelesa = 10;// k->vrniPov();
+	float impSkalar = -(1 + povrnitevTelesa) * velNormale;//Sila skozi cas trka
 	sf::Vector2f impulz = impSkalar * normala;
-
-	k->nastaviVel(kVel + (1 / k->vrniMaso() * impulz));
+	k->nastaviVel(kVel + (1 / k->vrniMaso()) * impulz);
 }
 
 void pfiz::UpraviteljTeles::nastavikOkno(sf::RenderWindow* kOkno) {
@@ -169,8 +178,4 @@ float pfiz::UpraviteljTeles::skalarniProd(sf::Vector2f rv, sf::Vector2f normala)
 	float sp;
 	sp = (rv.x * normala.x) + (rv.y * normala.y);
 	return sp;
-}
-
-float pfiz::UpraviteljTeles::clamp(float value, float low, float high) {
-	return (value < low) ? low : ((value > high) ? high : value);
 }

@@ -5,11 +5,11 @@ pfiz::Telo::Telo(float x, float y) :
 	g(0.f),
 	povrnitev(1 / ((rand() % 10 + 1))),
 	staticno(1),
-	premik(0),
 	padec(0),
 	poz(x,y),
 	grav(0.f, 0.f),
-	vel(0.f, 0.f)
+	vel(0.f, 0.f),
+	trk(1)
 {}
 
 pfiz::Telo::~Telo() {
@@ -19,7 +19,7 @@ void pfiz::Telo::premikOblike() {
 	if (this->staticno) {
 		if (this->padec) {
 			if (this->grav.y < 5.f) {
-				this->grav.y += (1 / this->masa) * 1.0;
+				this->grav.y += (1 / this->masa) * 0.1;
 			}
 			this->vel += this->grav;
 			this->g += this->grav.y;
@@ -30,6 +30,10 @@ void pfiz::Telo::premikOblike() {
 			this->g = 0.0;
 		}
 	}
+}
+
+void pfiz::Telo::spremnGrav(float g) {
+	this->vel.y += g;
 }
 
 //Vmensiki
@@ -45,13 +49,6 @@ void pfiz::Telo::nastaviStaticno(bool staticno) {
 }
 bool pfiz::Telo::vrniStaticno() {
 	return this->staticno;
-}
-
-void pfiz::Telo::nastaviPremik(bool premik) {
-	this->premik = premik;
-}
-bool pfiz::Telo::vrniPremik() {
-	return this->premik;
 }
 
 void pfiz::Telo::nastaviVel(float x, float y) {
@@ -91,4 +88,18 @@ float pfiz::Telo::vrniPov() {
 
 void pfiz::Telo::nastaviPov(float pov) {
 	this->povrnitev = pov;
+}
+
+float pfiz::Telo::vrniGrav() {
+	return this->povrnitev;
+}
+void pfiz::Telo::nastaviGrav(float pov) {
+	this->g = pov;
+}
+
+void pfiz::Telo::nastaviTrk(bool trk) {
+	this->trk = trk;
+}
+bool pfiz::Telo::vrniTrk() {
+	return this->trk;
 }

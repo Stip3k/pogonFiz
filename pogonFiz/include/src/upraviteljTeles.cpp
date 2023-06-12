@@ -15,7 +15,6 @@ void pfiz::UpraviteljTeles::posodobiOblike(sf::Time dCas) {
 	this->stikOblik();
 	krogi.posodobiOblike(this->kOkno, dCas);
 	skotniki.posodobiOblike(this->kOkno, dCas);
-
 }
 
 void pfiz::UpraviteljTeles::dodajKrog(float x, float y, float r) {
@@ -34,12 +33,12 @@ void pfiz::UpraviteljTeles::dodajKrog(float x, float y, float r) {
 }
 
 void pfiz::UpraviteljTeles::dodajStirikotnik(float x, float y, float w, float h) {
-	Pravokotnik* el = new Pravokotnik(x, y, w,h);
+	Pravokotnik* el = new Pravokotnik(x, y, w, h);
 	skotniki.dodajTelo(el);
 }
 
 void pfiz::UpraviteljTeles::stikOblik() {
-	if (this->krogi.aliPrazen() && (this->krogi.vrniSeznam()->size() > 1)) {
+	if (this->krogi.aliPrazen() && (this->krogi.vrniSeznam()->size() > 0)) {
 		std::list<Krog*>::iterator it;
 		for (it = this->krogi.vrniSeznam()->begin(); it != this->krogi.vrniSeznam()->end(); ++it) {
 
@@ -99,6 +98,7 @@ void pfiz::UpraviteljTeles::stikOblik() {
 					if (d < (radijKroga + radijPravo)) {
 						std::cout << "Orpavi trk---------------------" << std::endl;
 						std::cout << closest.x << " --- " << closest.y << std::endl;
+
 						this->opraviTrk(k, p2);
 						k->nastaviVel(k->vrniVel().x, k->vrniVel().y-k->vrniGrav());
 					}
@@ -107,6 +107,7 @@ void pfiz::UpraviteljTeles::stikOblik() {
 					k->nastaviTrk(1);
 				}
 			}
+			this->preveriStike(kOkno, k);
 		}
 	}
 }
@@ -126,7 +127,7 @@ void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Krog* k2) {
 	float impSkalar = -(1 + povrnitevTelesa) * velNormale;//Sila skozi cas trka
 	sf::Vector2f impulz = impSkalar * normala;
 
-	std::cout << "----------------------------------------------------------------" << std::endl;
+	std::cout <<  "--Krog-Krog--" <<std::endl;
 	std::cout << "Normala trka, x: " << normala.x << " in y: " << normala.y << std::endl;
 	std::cout << "Vrednost impSkalar: " << impSkalar << std::endl;
 	std::cout << "Vrednost impulza odboja: x= " << impulz.x << " y= " << impulz.y << std::endl;
@@ -137,13 +138,16 @@ void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Krog* k2) {
 
 //Preverjanje trkov med krogi in pravokotniki
 void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Pravokotnik* k2) {
+	std::cout << "--Pravokotnik--" << std::endl;
+
 	sf::Vector2f kVel = k->vrniVel();
 	sf::Vector2f k2Vel = k2->vrniVel();
-
 	sf::Vector2f rv = kVel - k2Vel;
-	
-	sf::Vector2f normala = this->normalaTrka(k->vrniPoz(), k2->vrniPoz());
-	float velNormale = this->skalarniProd(rv, normala);
+
+	std::cout << "Velocity: " << rv.x << " in y: " << rv.y << std::endl;
+
+	sf::Vector2f normala = this->normalaTrka(k->vrniObliko()->getPosition(), k2->vrniObliko()->getPosition());
+	double velNormale = this->skalarniProd(rv, normala);
 
 	if (velNormale > 0) {
 		return;
@@ -151,7 +155,13 @@ void pfiz::UpraviteljTeles::opraviTrk(Krog* k, Pravokotnik* k2) {
 
 	float povrnitevTelesa = 10;// k->vrniPov();
 	float impSkalar = -(1 + povrnitevTelesa) * velNormale;//Sila skozi cas trka
-	sf::Vector2f impulz = impSkalar * normala;
+	sf::Vector2f impulz = impSkalar* normala;
+
+	std::cout << "VelNormale: " << velNormale<< std::endl;
+	std::cout << "Normala trka, x: " << normala.x << " in y: " << normala.y << std::endl;
+	std::cout << "Vrednost impSkalar: " << impSkalar << std::endl;
+	std::cout << "Vrednost impulza odboja: x= " << impulz.x << " y= " << impulz.y << std::endl;
+
 	k->nastaviVel(kVel + (1 / k->vrniMaso()) * impulz);
 }
 
@@ -174,8 +184,52 @@ sf::Vector2f pfiz::UpraviteljTeles::normalaTrka(sf::Vector2f p, sf::Vector2f d) 
 	return normala;
 }
 
-float pfiz::UpraviteljTeles::skalarniProd(sf::Vector2f rv, sf::Vector2f normala) {
-	float sp;
+double pfiz::UpraviteljTeles::skalarniProd(sf::Vector2f rv, sf::Vector2f normala) {
+	double sp;
 	sp = (rv.x * normala.x) + (rv.y * normala.y);
 	return sp;
+}
+
+void pfiz::UpraviteljTeles::preveriStike(sf::RenderWindow* kOkno, Krog* k) {
+	sf::Vector2u vel = kOkno->getSize();
+	sf::Vector2f poz = k->vrniObliko()->getPosition();
+	float r = k->vrniObliko()->getRadius() * 2;
+	//Preveri ali oblika pada
+	if (((poz.y + r) < vel.y) &&
+		((poz.x + r) < vel.x) &&
+		(poz.y > 0) &&
+		(poz.x > 0) && k->vrniTrk()) {
+		k->nastaviPadec(1);
+	}
+	else {
+		std::cout << "--Rob--" << std::endl;
+
+		sf::Vector2f rv = k->vrniVel();
+		sf::Vector2f normala;
+		sf::Vector2f tmp = k->vrniPoz();
+
+		if ((poz.y + r) > vel.y) {
+			k->vrniObliko()->setPosition(tmp.x, vel.y - r);
+			tmp.y = tmp.y + r;
+		}
+		else if ((poz.x + r) > vel.x) {
+			k->vrniObliko()->setPosition(vel.x - r, tmp.y);
+			rv.x *= -1;
+			tmp.x = tmp.x + r;
+		}
+		else if (poz.y < 0) {
+			k->vrniObliko()->setPosition(poz.x, 0);
+			rv.y *= -1;
+			tmp.y = tmp.y - r;
+		}
+		else if (poz.x < 0) {
+			k->vrniObliko()->setPosition(0, poz.y);
+			rv.x *= -1;
+			tmp.x = tmp.x - r;
+		}
+		
+		k->nastaviVel(rv);
+		k->nastaviPadec(0);
+	}
+
 }

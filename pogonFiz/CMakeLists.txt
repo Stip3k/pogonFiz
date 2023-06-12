@@ -16,6 +16,6 @@ add_executable (pogonFiz "pogonFiz.cpp" "pogonFiz.h"
 						 "include/src/pogon.cpp" "include/header/pogon.h"
 						 "include/header/telo.h" "include/src/telo.cpp"
 						 "include/header/krog.h" "include/src/krog.cpp"
-						 "include/header/krogList.h"    "include/header/upraviteljTeles.h" "include/src/upraviteljTeles.cpp" "include/src/pravokotnik.cpp" "include/header/pravokotnik.h" "include/header/pravokotnikList.h")
+						 "include/header/krogList.h"    "include/header/upraviteljTeles.h" "include/src/upraviteljTeles.cpp" "include/src/pravokotnik.cpp" "include/header/pravokotnik.h" "include/header/pravokotnikList.h"  )
 
 target_link_libraries(pogonFiz sfml-graphics)

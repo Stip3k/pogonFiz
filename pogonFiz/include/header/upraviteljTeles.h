@@ -11,7 +11,7 @@ namespace pfiz {
 		void opraviTrk(Krog* k, Krog* k2);
 		void opraviTrk(Krog* k, Pravokotnik* k2);
 		sf::Vector2f normalaTrka(sf::Vector2f p, sf::Vector2f d);
-		float skalarniProd(sf::Vector2f rv, sf::Vector2f normala);
+		double skalarniProd(sf::Vector2f rv, sf::Vector2f normala);
 	public:
 		UpraviteljTeles();
 		~UpraviteljTeles();
@@ -25,6 +25,7 @@ namespace pfiz {
 
 		void nastavikOkno(sf::RenderWindow* kOkno);
 		sf::RenderWindow* vrnikOkno();
-		
+		void preveriStike(sf::RenderWindow* kOkno, Krog* k);
+
 	};
 }

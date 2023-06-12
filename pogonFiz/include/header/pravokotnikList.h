@@ -45,7 +45,6 @@ namespace pfiz {
 				 */
 				Pravokotnik* i = *it;
 
-				//this->preveriStike(kOkno, i);
 				i->premikOblike();
 
 				/*
@@ -63,24 +62,7 @@ namespace pfiz {
 				i->nastaviPoz(i->vrniObliko()->getPosition());
 			}
 		}
-		/*
-		void preveriStike(sf::RenderWindow* kOkno, Pravokotnik* k) {
-			sf::Vector2u vel = kOkno->getSize();
-			sf::Vector2f poz = k->vrniPoz();
-			float r = k->vrniObliko()->getRadius() * 2;
-			//Preveri ali oblika pada
-			if (((poz.y + r) < vel.y) &&
-				((poz.x + r) < vel.x) &&
-				(poz.y > 0) &&
-				(poz.x > 0)) {
-				k->nastaviPadec(1);
-			}
-			else {
-				k->nastaviPadec(0);
-				if ((poz.y + r) > vel.y) { k->vrniObliko()->setPosition(poz.x, vel.y - r); }
-			}
-		}
-		*/
+
 		std::size_t vrniVel() {
 			return seznam.size();
 		}

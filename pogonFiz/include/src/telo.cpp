@@ -3,7 +3,7 @@
 pfiz::Telo::Telo(float x, float y) :
 	masa((rand() % 5 + 1)*10),
 	g(0.f),
-	povrnitev(1 / ((rand() % 10 + 1))),
+	povrnitev(1 / ((rand() % 1000 + 1))),
 	staticno(1),
 	padec(0),
 	poz(x,y),
@@ -19,7 +19,7 @@ void pfiz::Telo::premikOblike() {
 	if (this->staticno) {
 		if (this->padec) {
 			if (this->grav.y < 5.f) {
-				this->grav.y += (1 / this->masa) * 0.1;
+				this->grav.y += (1 / this->masa);
 			}
 			this->vel += this->grav;
 			this->g += this->grav.y;

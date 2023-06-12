@@ -45,7 +45,6 @@ namespace pfiz {
 				 */
 				Krog* i = *it;
 
-				this->preveriStike(kOkno, i);
 				i->premikOblike();
 
 				/*
@@ -56,27 +55,11 @@ namespace pfiz {
 				//std::cout << (float)dCas.asSeconds() << std::endl;
 
 				i->vrniObliko()->move(i->vrniVel().x * (float)dCas.asSeconds(),
-									  i->vrniVel().y * (float)dCas.asSeconds());
+					i->vrniVel().y * (float)dCas.asSeconds());
 				kOkno->draw(*(i->vrniObliko()));
 
 				//Posodobi vrednosti kraja oblike v razredu oblike pogona
 				i->nastaviPoz(i->vrniObliko()->getPosition());
-			}
-		}
-
-		void preveriStike(sf::RenderWindow* kOkno, Krog* k) {
-			sf::Vector2u vel = kOkno->getSize();
-			sf::Vector2f poz = k->vrniPoz();
-			float r = k->vrniObliko()->getRadius()*2;
-			//Preveri ali oblika pada
-			if ( ((poz.y + r) < vel.y) && 
-				 ((poz.x + r) < vel.x) &&
-				 (poz.y > 0) && 
-				 (poz.x > 0) && k->vrniTrk()) {
-				k->nastaviPadec(1);
-			} else {
-				k->nastaviPadec(0);
-				if ((poz.y + r) > vel.y) { k->vrniObliko()->setPosition(poz.x, vel.y - r); }
 			}
 		}
 
